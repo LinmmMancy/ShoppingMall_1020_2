@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,6 +21,9 @@ import com.youth.banner.transformer.BackgroundToForegroundTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Created by Mancy on 2017/2/23.
@@ -105,7 +110,7 @@ public class HomeAdapter extends RecyclerView.Adapter {
     //  显示分类的数量
     @Override
     public int getItemCount() {
-        return 1;
+        return 2;
     }
 
     public HomeAdapter(Context mContext, HomeBean.ResultBean result) {
@@ -125,6 +130,9 @@ public class HomeAdapter extends RecyclerView.Adapter {
             return new BannerViewHolder(mContext, inflater.inflate(R.layout.banner_viewpager, null));
 
         } else if (viewType == CHANNEL) {
+
+            return new ChannelViewHolder(mContext, inflater.inflate(R.layout.channel_item, null));
+
 
         } else if (viewType == ACT) {
 
@@ -150,6 +158,11 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
             viewHolder.setData(result.getBanner_info());
         } else if (getItemViewType(position) == CHANNEL) {
+            // 绑定数据
+
+            ChannelViewHolder viewHolder = (ChannelViewHolder) holder;
+
+            viewHolder.setData(result.getChannel_info());
 
         } else if (getItemViewType(position) == ACT) {
 
@@ -162,6 +175,45 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
         }
 
+    }
+
+
+    class ChannelViewHolder extends RecyclerView.ViewHolder {
+
+        private final Context mContext;
+        @InjectView(R.id.gv_channel)
+        GridView gvChannel;
+
+        ChannelAdapter channelAdapter;
+
+
+        public ChannelViewHolder(Context mContext, View itemView) {
+            super(itemView);
+            this.mContext = mContext;
+            ButterKnife.inject(this, itemView);
+
+
+        }
+
+        public void setData(List<HomeBean.ResultBean.ChannelInfoBean> channel_info) {
+
+            // 设置 grid view 的适配器
+            channelAdapter = new ChannelAdapter(mContext, channel_info);
+            // 讲adapter 给gvchannel 设置进去
+            gvChannel.setAdapter(channelAdapter);
+
+
+            // 设置item 的点击 事件
+
+            gvChannel.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(mContext, "position ===" + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        }
     }
 
 

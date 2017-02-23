@@ -6,9 +6,10 @@ package com.mancy.shoppingmall_1020_2.utils;
 
 public class Constants {
 
-       public static String BASE_URL = "http://192.168.1.36:8080/atguigu";
+    //  public static String BASE_URL = "http://192.168.1.36:8080/atguigu";
     //public static String BASE_URL = "http://172.20.10.7:8080/atguigu";
-    // public static String BASE_URL = "http://10.0.2.2:8080/atguigu";
+    public static String BASE_URL = "http://192.168.1.46:8080/atguigu";
+    // public static String BASE_URL = "http://182.92.5.3:8081/android/resources";
 
 
     private static final String BASE_URL_JSON = BASE_URL + "/json/";

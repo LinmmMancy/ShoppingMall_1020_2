@@ -5,11 +5,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.mancy.shoppingmall_1020_2.R;
 import com.mancy.shoppingmall_1020_2.bean.HomeBean;
+import com.mancy.shoppingmall_1020_2.utils.Constants;
+import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerClickListener;
+import com.youth.banner.loader.ImageLoader;
+import com.youth.banner.transformer.BackgroundToForegroundTransformer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -162,19 +170,82 @@ public class HomeAdapter extends RecyclerView.Adapter {
 
         private final Context mContext;
 
-        private TextView title;
+        private Banner banner;
 
         public BannerViewHolder(Context mContext, View itemView) {
 
             super(itemView);
             this.mContext = mContext;
-            title = (TextView) itemView.findViewById(R.id.title);
+            // title = (TextView) itemView.findViewById(R.id.title);
+
+            banner = (Banner) itemView.findViewById(R.id.banner);
 
         }
 
         public void setData(List<HomeBean.ResultBean.BannerInfoBean> banner_info) {
 
-            title.setText("我是baner");
+            //得到数据
+            // 设置br的数据
+
+            List<String> images = new ArrayList<>();
+
+            for (int i = 0; i < banner_info.size(); i++) {
+
+
+                images.add(Constants.BASE_URL_IMAGE + banner_info.get(i).getImage());
+
+
+            }
+
+
+            //简单的使用 banner
+/*
+            banner.setImages(images)
+                    .setImageLoader(new ImageLoader() {
+                        @Override
+                        public void displayImage(Context context, Object path, ImageView imageView) {
+                            //具体方法内容自己去选择，次方法是为了减少banner过多的依赖第三方包，所以将这个权限开放给使用者去选择
+                            Glide.with(context)
+                                    .load(path)
+                                    .crossFade()
+                                    .into(imageView);
+                        }
+                    })
+                    .start();*/
+
+            banner.setImages(images)
+                    .setImageLoader(new ImageLoader() {
+                        @Override
+                        public void displayImage(Context context, Object path, ImageView imageView) {
+                            //具体方法内容自己去选择，次方法是为了减少banner过多的依赖第三方包，所以将这个权限开放给使用者去选择
+                            Glide.with(context)
+                                    .load(path)
+                                    .crossFade()
+                                    .into(imageView);
+                        }
+                    })
+                    .start();
+
+
+            // 设置样式4
+
+            banner.setBannerAnimation(BackgroundToForegroundTransformer.class);
+
+
+            // 设置 banner的点击事件
+
+            banner.setOnBannerClickListener(new OnBannerClickListener() {
+
+                @Override
+                public void OnBannerClick(int position) {
+
+                    int realPsotion = position - 1;
+
+                    Toast.makeText(mContext, "realPsotion===" + realPsotion, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
         }
     }
 }
